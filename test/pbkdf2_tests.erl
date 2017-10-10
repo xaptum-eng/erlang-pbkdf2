@@ -39,7 +39,7 @@ pbkdf2_hex(Args) ->
 
 rfc6070_correctness_test_() ->
 	[
-		{timeout, 60,
+		{timeout, 60000, % do not trust the docs - timeout is in msec
 			?_assertEqual(
 				Expected,
 				pbkdf2_hex(Args)
