@@ -27,7 +27,7 @@ prop_equivalent() ->
 			%% we assume the ebin of this file is in .eunit, where rebar puts it
 			PortSrcDir = filename:dirname(code:which(?MODULE)) ++ "/../test",
 			%% yeeehaw
-			[] = os:cmd("gcc "++PortSrcDir++"/pbkdf2-port.c -o pbkdf2-port -I"++EIDir++"/include -L"++EIDir++"/lib -lei -lssl -lcrypto"),
+			[] = os:cmd("gcc -Wno-format -Wno-pointer-sign  -Wno-implicit-function-declaration "++PortSrcDir++"/pbkdf2-port.c -o pbkdf2-port -I"++EIDir++"/include -L"++EIDir++"/lib -lei -lssl -lcrypto"),
 			?FORALL({Password, Salt, Iterations, KeySize}, {gen_print_bin(), gen_salt(), gen_iterations(), gen_keysize()},
 				begin
 					Port = open_port({spawn, "./pbkdf2-port"}, [{packet, 4}]),
