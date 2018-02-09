@@ -1,19 +1,22 @@
-.PHONY: deps test
+.PHONY: compile rel cover test dialyzer
+REBAR=./rebar3
 
-all: deps compile
-
-compile: deps
-	./rebar compile
-
-deps:
-	test -d deps || ./rebar get-deps
+compile:
+	$(REBAR) compile
 
 clean:
-	./rebar clean
+	$(REBAR) clean
 
-distclean: clean
-	./rebar delete-deps
+cover: test
+	$(REBAR) cover
 
-DIALYZER_APPS = kernel stdlib erts sasl ssl crypto public_key
+test: compile
+	$(REBAR) as test do eunit
 
-include tools.mk
+dialyzer:
+	$(REBAR) dialyzer
+
+xref:
+	$(REBAR) xref
+
+check: test dialyzer xref

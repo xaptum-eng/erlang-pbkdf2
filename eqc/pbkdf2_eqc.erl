@@ -1,8 +1,5 @@
 -module(pbkdf2_eqc).
 
--ifdef(TEST).
--ifdef(EQC).
-
 -export([prop_equivalent/0]).
 
 -include_lib("eqc/include/eqc.hrl").
@@ -25,7 +22,7 @@ prop_equivalent() ->
 			{error, Reason};
 		EIDir ->
 			%% we assume the ebin of this file is in .eunit, where rebar puts it
-			PortSrcDir = filename:dirname(code:which(?MODULE)) ++ "/../test",
+			PortSrcDir = "eqc",
 			%% yeeehaw
 			[] = os:cmd("gcc -Wno-format -Wno-pointer-sign  -Wno-implicit-function-declaration "++PortSrcDir++"/pbkdf2-port.c -o pbkdf2-port -I"++EIDir++"/include -L"++EIDir++"/lib -lei -lssl -lcrypto"),
 			?FORALL({Password, Salt, Iterations, KeySize}, {gen_print_bin(), gen_salt(), gen_iterations(), gen_keysize()},
@@ -69,6 +66,3 @@ gen_keysize() ->
 
 gen_iterations() ->
 	?LET(X, ?SUCHTHAT(I, nat(), I > 0), X*X).
-
--endif.
--endif.
