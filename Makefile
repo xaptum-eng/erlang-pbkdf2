@@ -7,11 +7,12 @@ compile:
 clean:
 	$(REBAR) clean
 
-cover: test
+cover: 
+	$(REBAR) eunit --cover
 	$(REBAR) cover
 
 test: compile
-	$(REBAR) as test do eunit
+	$(REBAR) eunit
 
 dialyzer:
 	$(REBAR) dialyzer
